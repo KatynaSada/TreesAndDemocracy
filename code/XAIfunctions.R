@@ -1,29 +1,34 @@
 library(randomForest)
 library(xgboost)
 
-votes_assignment <- function(proportion, votes=10) {
-  # Assign votes according to a vector of probabilities.
+#############################################################
+# SEATS voting function
+#############################################################
+
+SEATS_assignment <- function(proportion, seats) {
+  # Assign seats according to a vector of probabilities.
   
   # normalize the proportion vector to ensure it sums to one
   proportion <- proportion / sum(proportion)
-  # calculate the initial votes assigned by rounding
-  votes_assigned <- round(votes * proportion)
+  # calculate the initial seats assigned by rounding
+  seats_assigned <- round(seats * proportion)
   
-  # adjust the votes to ensure the total matches the specified number of votes
-  while (sum(votes_assigned) != votes) {
-    if (sum(votes_assigned) > votes) {
-      # if there are too many votes, reduce one vote from the class with the largest discrepancy
-      remove_from <- which.max(votes_assigned / votes - proportion)
-      votes_assigned[remove_from] <- votes_assigned[remove_from] - 1
+  # adjust the seats to ensure the total matches the specified number of seats
+  # "Discrepancy" refers to the difference between the current proportion of seats assigned to a class and the desired proportion.
+  while (sum(seats_assigned) != seats) {
+    if (sum(seats_assigned) > seats) {
+      # Largest Discrepancy: if there are too many seats, reduce one vote from the class with the largest discrepancy
+      remove_from <- which.max(seats_assigned / seats - proportion)
+      seats_assigned[remove_from] <- seats_assigned[remove_from] - 1
     } else {
-      # if there are too few votes, add one vote to the class with the smallest discrepancy
-      add_to <- which.min(votes_assigned / votes - proportion)
-      votes_assigned[add_to] <- votes_assigned[add_to] + 1
+      # Smallest Discrepancy:if there are too few seats, add one vote to the class with the smallest discrepancy
+      add_to <- which.min(seats_assigned / seats - proportion)
+      seats_assigned[add_to] <- seats_assigned[add_to] + 1
     }
   }
   
-  # return the adjusted votes
-  return(votes_assigned)
+  # return the adjusted seats
+  return(seats_assigned)
 }
 
 #############################################################
@@ -31,55 +36,62 @@ votes_assignment <- function(proportion, votes=10) {
 #############################################################
 require(randomForest)
 
-train_rf_hard <- function(expression_matrix, response_matrix, num_trees = 500) {
+train_rf_hard <- function(genomics_matrix, response_matrix, num_trees = 500, mtry = sqrt(ncol(genomics_matrix)), min_node_size = 1, max_depth = NULL, sample_fraction = 1) {
   # Train a Random Forest model using hard class assignments.
   # Args:
-  #   expression_matrix: A matrix of features (samples x features).
-  #   response_matrix: A matrix of responses (samples x classes), where each row has a single 1 indicating the class.
-  #   ntree: Number of trees in the Random Forest.
-  # Returns:
-  #   A trained Random Forest model.
+  #   genomics_matrix: A matrix of features (samples x features).
+  #   response_matrix: A matrix of responses (samples x class_labels)
+  #   num_trees: Number of trees in the Random Forest.
+  #   mtry: Number of variables randomly sampled at each split
+  #   min_node_size: Minimum size of terminal nodes
+  #   max_depth: Maximum depth of trees (NULL means unlimited)
+  #   sample_fraction: Fraction of cases to sample for each tree
   
-  # Convert the response matrix to a factor of class labels (hard assignment).
-  class_labels <- as.factor(max.col(response_matrix))
+  # Convert the response matrix to a factor of class labels (hard assignment)
+  class_labels <- as.factor(colnames(response_matrix)[max.col(response_matrix)])
   
-  # Train the Random Forest model.
-  model <- randomForest(x = expression_matrix, y = class_labels, ntree = num_trees)
+  # Train the Random Forest model
+  model <- randomForest(x = genomics_matrix, 
+             y = class_labels, 
+             ntree = num_trees,
+             mtry = mtry,
+             nodesize = min_node_size,
+             maxnodes = if(is.null(max_depth)) NULL else 2^max_depth,
+             sampsize = ceiling(nrow(genomics_matrix) * sample_fraction))
   return(model)
 }
 
-predict_rf_hard <- function(model, expression_matrix) {
+train_rf_seats <- function(genomics_matrix, pseudoprobabilities, num_trees = 500, mtry = sqrt(ncol(genomics_matrix)), min_node_size = 1, max_depth = NULL, sample_fraction = 1, num_seats = 10) {
+  # Expand the expression matrix
+  expanded_expression <- genomics_matrix[rep(1:nrow(genomics_matrix), each = num_seats),]
+  
+  # Assign seats to each class
+  seats_matrix <- apply(pseudoprobabilities, 1, SEATS_assignment, num_seats)
+  
+  # Create class labels vector
+  class_labels <- as.factor(rep(rep(colnames(pseudoprobabilities), nrow(pseudoprobabilities)), as.numeric(seats_matrix)))
+  
+  # Train the Random Forest model
+  model <- randomForest(x = expanded_expression, 
+             y = class_labels, 
+             ntree = num_trees,
+             mtry = mtry,
+             nodesize = min_node_size,
+             maxnodes = if(is.null(max_depth)) NULL else 2^max_depth,
+             sampsize = ceiling(nrow(expanded_expression) * sample_fraction))
+  
+  return(model)
+}
+
+predict_rf <- function(model, genomics_matrix) {
   # Predict class labels using a trained Random Forest model.
   # Args:
   #   model: A trained Random Forest model.
-  #   expression_matrix: A matrix of features (samples x features) for prediction.
+  #   genomics_matrix: A matrix of features (samples x features) for prediction.
   # Returns:
-  #   A vector of predicted class labels.
+  #   A vector of predicted class labels as character strings.
   
-  predictions <- predict(model, expression_matrix)
-  return(predictions)
-}
-
-train_rf_votes <- function(expression_matrix, response_matrix, num_trees = 500, num_votes = 10) {
-  # Train a Random Forest model where each drug is repeated according to the number of assigned votes.
-  
-  # Expand the expression matrix by repeating each row num_votes times.
-  expanded_expression <- expression_matrix[rep(1:nrow(response_matrix), each = num_votes),]
-  
-  # Assign votes to each class (drug) for every sample.
-  votes_matrix <- apply(response_matrix, 1, votes_assignment, num_votes)
-  
-  # Create a vector of class labels, repeated according to the assigned votes.
-  class_labels <- as.factor(rep(rep(1:ncol(response_matrix), nrow(response_matrix)), as.numeric(votes_matrix)))
-  
-  # Train the Random Forest model.
-  model <- randomForest(x = expanded_expression, y = class_labels, ntree = num_trees)
-  
-  return(model)
-}
-
-predict_rf <- function(model, expression_matrix) {
-  predictions <- predict(model, expression_matrix)
+  predictions <- as.character(predict(model, genomics_matrix))
   return(predictions)
 }
 
@@ -87,62 +99,84 @@ predict_rf <- function(model, expression_matrix) {
 #############################################################
 require(xgboost)
 
-train_xgb_hard <- function(expression_matrix, response_matrix, num_rounds = 100, params = list()) {
+train_xgb_hard <- function(genomics_matrix, response_matrix, max_depth = 3, eta = 0.3, gamma = 0, min_child_weight = 1, subsample = 1, colsample_bytree = 1, nrounds = 100, nthread = 8, early_stopping_rounds = 20) {
   # Train an XGBoost model using hard class assignments.
   # Args:
-  #   expression_matrix: A matrix of features (samples x features).
-  #   response_matrix: A matrix of responses (samples x classes), where each row has a single 1 indicating the class.
-  #   num_rounds: Number of boosting rounds.
-  #   params: A list of parameters for the XGBoost model.
-  # Returns:
-  #   A trained XGBoost model.
+  #   genomics_matrix: A matrix of features (samples x features).
+  #   response_matrix: A matrix of responses (samples x class_labels).
+  #   max_depth: Maximum depth of trees
+  #   eta: Learning rate
+  #   gamma: Minimum loss reduction for partition
+  #   min_child_weight: Minimum sum of instance weight in a child
+  #   subsample: Subsample ratio of training instances
+  #   colsample_bytree: Subsample ratio of columns for each tree
+  #   nrounds: Number of boosting rounds
+  #   nthread: Number of parallel threads
+  #   early_stopping_rounds: Stop if performance doesn't improve
   
-  # Convert the response matrix to a factor of class labels (hard assignment).
-  class_labels <- max.col(response_matrix) - 1  # XGBoost uses 0-based indexing for labels. 
+  class_names <- colnames(response_matrix)
+  class_labels <- factor(class_names[max.col(response_matrix)], levels = class_names)
+  numeric_labels <- as.numeric(class_labels) - 1
   
-  xgb_params <- list("objective" = "multi:softprob",
-                     "eval_metric" = "mlogloss",
-                     "num_class" = ncol(response_matrix),
-                    #"tree_method" = "gpu_hist",
-                     "booster" = "gbtree")
+  xgb_params <- list("objective" = "multi:softmax",
+           "eval_metric" = "mlogloss",
+           "num_class" = ncol(response_matrix),
+           "booster" = "gbtree")
   
-  model <- xgboost(params = xgb_params, data = expression_matrix, 
-                                   label = as.numeric(class_labels),
-                                   max_depth = 3, eta = .3, nthread = 8, 
-                                   nrounds = num_rounds, subsample = 1,
-                                   print_every_n = 1)
-
+  model <- xgboost(params = xgb_params, 
+           data = genomics_matrix, 
+           label = numeric_labels,
+           max_depth = max_depth,
+           eta = eta,
+           gamma = gamma,
+           min_child_weight = min_child_weight,
+           subsample = subsample,
+           colsample_bytree = colsample_bytree,
+           nrounds = nrounds,
+           nthread = nthread,
+           early_stopping_rounds = early_stopping_rounds,
+           verbose = 1)
   
-  # Train the XGBoost model.
-  #model <- xgboost(data = dtrain, params = params, nrounds = num_rounds, verbose = 0)
+  model$class_names <- class_names
   return(model)
 }
 
-train_xgb_votes <- function(expression_matrix, response_matrix, num_rounds = 100, num_votes = 10, max_depth=3) {
-  # Train an XGBoost model where each drug is repeated according to the number of assigned votes.
+train_xgb_seats <- function(genomics_matrix, pseudoprobabilities, max_depth = 3, eta = 0.3, gamma = 0, min_child_weight = 1, subsample = 1, colsample_bytree = 1, nrounds = 100, nthread = 8, early_stopping_rounds = NULL, num_seats = 10) {
+  
+  expanded_expression <- genomics_matrix[rep(1:nrow(pseudoprobabilities), each = num_seats),]
+  seats_matrix <- apply(pseudoprobabilities, 1, SEATS_assignment, num_seats)
+  class_names <- colnames(pseudoprobabilities)
+  class_labels <- factor(rep(rep(1:ncol(pseudoprobabilities), nrow(pseudoprobabilities)), 
+               as.numeric(seats_matrix)), 
+            levels = 1:ncol(pseudoprobabilities))
+  numeric_labels <- as.numeric(class_labels) - 1
 
-  # Expand the expression matrix by repeating each row num_votes times.
-  expanded_expression <- expression_matrix[rep(1:nrow(response_matrix), each = num_votes),]
-  votes_matrix <- apply(response_matrix,1,votes_assignment,num_votes)
-  classes <- factor(rep(rep(1:ncol(response_matrix), nrow(response_matrix)), as.numeric(votes_matrix)), levels = 1:ncol(response_matrix))
+  xgb_params <- list("objective" = "multi:softmax",
+           "eval_metric" = "mlogloss",
+           "num_class" = ncol(pseudoprobabilities),
+           "booster" = "gbtree")
+           
+  model <- xgboost(params = xgb_params, 
+           data = expanded_expression, 
+           label = numeric_labels,
+           max_depth = max_depth,
+           eta = eta,
+           gamma = gamma,
+           min_child_weight = min_child_weight,
+           subsample = subsample,
+           colsample_bytree = colsample_bytree,
+           nrounds = nrounds,
+           nthread = nthread,
+           early_stopping_rounds = early_stopping_rounds,
+           verbose = 1)
   
-  xgb_params <- list("objective" = "multi:softprob",
-                     "eval_metric" = "mlogloss",
-                     "num_class" = ncol(response_matrix),
-                     #"tree_method" = "gpu_hist",
-                     "booster" = "gbtree")
-  model <- xgboost(params = xgb_params, data = expanded_expression, 
-                    label = as.numeric(classes)-1,
-                    max_depth = max_depth, eta = .3, nthread = 8, 
-                    nrounds = num_rounds, subsample = 1, verbose =1,
-                    print_every_n = 1)
-  
-  
+  model$class_names <- class_names
   return(model)
 }
 
-predict_xgb <- function(model, expression_matrix) {
-  Treatment <- matrix(predict(model, expression_matrix), ncol = model$params$num_class, byrow = T)
-  Treatment <- max.col(Treatment)
-  return(Treatment)
+predict_xgb <- function(model, genomics_matrix) {
+  # For multi:softmax, predict() directly returns class indices (0-based)
+  predictions <- predict(model, genomics_matrix)
+  # Add 1 to convert from 0-based to 1-based indexing and map to class names
+  return(model$class_names[predictions + 1])
 }

@@ -321,206 +321,206 @@ for (group in 1:folds) { #folds
   remove_patients <- !keep_patients
   
   # ODTMut
-  cat("ODTMut\n")
-  ODTMut <- trainTree(PatientData = mutations_w12[keep_patients,], PatientSensitivity = drug_response_w12[keep_patients,], minbucket = minbucket_mut)
-  treatment_ODT_mut[remove_patients] <- predictTree(tree = ODTMut, PatientSensitivityTrain = drug_response_w12[keep_patients,], PatientData = mutations_w12[remove_patients,])
-  
+  # cat("ODTMut\n")
+  # ODTMut <- trainTree(PatientData = mutations_w12[keep_patients,], PatientSensitivity = drug_response_w12[keep_patients,], minbucket = minbucket_mut)
+  # treatment_ODT_mut[remove_patients] <- predictTree(tree = ODTMut, PatientSensitivityTrain = drug_response_w12[keep_patients,], PatientData = mutations_w12[remove_patients,])
+  # 
   # # RFMut
   # cat("RFMut\n")
   # RFMut <- train_rf_hard(mutations_w12[keep_patients,], drug_response_w12[keep_patients,],num_trees=num_trees)
   # treatment_RF_mut[remove_patients] <- predict_rf(RFMut,mutations_w12[remove_patients,])
-  
-  
-  
-  # RFMut seats=1
-  RFMut_s1 <- train_rf_seats(mutations_w12[keep_patients,],  pseudop_w12[keep_patients,], num_trees = params_err_rfmut_seats$num_trees, mtry = params_err_rfmut_seats$mtry, min_node_size = params_err_rfmut_seats$min_node_size, max_depth = params_err_rfmut_seats$max_depth, sample_fraction = params_err_rfmut_seats$sample_fraction, num_seats = 1)
-  treatment_RF_mut_s1[remove_patients] <- predict_rf(RFMut_s1, mutations_w12[remove_patients,])
-  
+  # 
+  # 
+  # 
+  # # RFMut seats=1
+  # RFMut_s1 <- train_rf_seats(mutations_w12[keep_patients,],  pseudop_w12[keep_patients,], num_trees = params_acc_rfmut_seats$num_trees, mtry = params_acc_rfmut_seats$mtry, min_node_size = params_acc_rfmut_seats$min_node_size, max_depth = params_acc_rfmut_seats$max_depth, sample_fraction = params_acc_rfmut_seats$sample_fraction, num_seats = 1)
+  # treatment_RF_mut_s1[remove_patients] <- predict_rf(RFMut_s1, mutations_w12[remove_patients,])
+  # 
   # RFMut seats=6
-  RFMut_s6 <- train_rf_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], num_trees = params_err_rfmut_seats$num_trees, mtry = params_err_rfmut_seats$mtry, min_node_size = params_err_rfmut_seats$min_node_size, max_depth = params_err_rfmut_seats$max_depth, sample_fraction = params_err_rfmut_seats$sample_fraction, num_seats = 6)
-  treatment_RF_mut_s6[remove_patients] <- predict_rf(RFMut_s6, mutations_w12[remove_patients,])
-  
-  # RFMut seats=16
-  RFMut_s16 <- train_rf_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], num_trees = params_err_rfmut_seats$num_trees, mtry = params_err_rfmut_seats$mtry, min_node_size = params_err_rfmut_seats$min_node_size, max_depth = params_err_rfmut_seats$max_depth, sample_fraction = params_err_rfmut_seats$sample_fraction, num_seats = 16)
-  treatment_RF_mut_s16[remove_patients] <- predict_rf(RFMut_s16, mutations_w12[remove_patients,])
-  
-  # RFMut seats=19
-  RFMut_s19 <- train_rf_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], num_trees = params_err_rfmut_seats$num_trees, mtry = params_err_rfmut_seats$mtry, min_node_size = params_err_rfmut_seats$min_node_size, max_depth = params_err_rfmut_seats$max_depth, sample_fraction = params_err_rfmut_seats$sample_fraction, num_seats = 19)
-  treatment_RF_mut_s19[remove_patients] <- predict_rf(RFMut_s19, mutations_w12[remove_patients,])
-  
-  # RFMut seats=22
-  RFMut_s22 <- train_rf_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], num_trees = params_err_rfmut_seats$num_trees, mtry = params_err_rfmut_seats$mtry, min_node_size = params_err_rfmut_seats$min_node_size, max_depth = params_err_rfmut_seats$max_depth, sample_fraction = params_err_rfmut_seats$sample_fraction, num_seats = 22)
-  treatment_RF_mut_s22[remove_patients] <- predict_rf(RFMut_s22, mutations_w12[remove_patients,])
-  
-  
-  
-  
+  # RFMut_s6 <- train_rf_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], num_trees = params_acc_rfmut_seats$num_trees, mtry = params_acc_rfmut_seats$mtry, min_node_size = params_acc_rfmut_seats$min_node_size, max_depth = params_acc_rfmut_seats$max_depth, sample_fraction = params_acc_rfmut_seats$sample_fraction, num_seats = 6)
+  # treatment_RF_mut_s6[remove_patients] <- predict_rf(RFMut_s6, mutations_w12[remove_patients,])
+  # 
+  # # RFMut seats=16
+  # RFMut_s16 <- train_rf_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], num_trees = params_acc_rfmut_seats$num_trees, mtry = params_acc_rfmut_seats$mtry, min_node_size = params_acc_rfmut_seats$min_node_size, max_depth = params_acc_rfmut_seats$max_depth, sample_fraction = params_acc_rfmut_seats$sample_fraction, num_seats = 16)
+  # treatment_RF_mut_s16[remove_patients] <- predict_rf(RFMut_s16, mutations_w12[remove_patients,])
+  # 
+  # # RFMut seats=19
+  # RFMut_s19 <- train_rf_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], num_trees = params_acc_rfmut_seats$num_trees, mtry = params_acc_rfmut_seats$mtry, min_node_size = params_acc_rfmut_seats$min_node_size, max_depth = params_acc_rfmut_seats$max_depth, sample_fraction = params_acc_rfmut_seats$sample_fraction, num_seats = 19)
+  # treatment_RF_mut_s19[remove_patients] <- predict_rf(RFMut_s19, mutations_w12[remove_patients,])
+  # 
+  # # RFMut seats=22
+  # RFMut_s22 <- train_rf_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], num_trees = params_acc_rfmut_seats$num_trees, mtry = params_acc_rfmut_seats$mtry, min_node_size = params_acc_rfmut_seats$min_node_size, max_depth = params_acc_rfmut_seats$max_depth, sample_fraction = params_acc_rfmut_seats$sample_fraction, num_seats = 22)
+  # treatment_RF_mut_s22[remove_patients] <- predict_rf(RFMut_s22, mutations_w12[remove_patients,])
+
+  # 
+  # 
+  # 
   # XGBoostMut
   # cat("XGBoostMut\n")
   # XGBoostMut <- train_xgb_hard(mutations_w12[keep_patients,], drug_response_w12[keep_patients,],nrounds=nrounds)
   # treatment_XGBoost_mut[remove_patients] <- predict_xgb(XGBoostMut,mutations_w12[remove_patients,])
-  
-  train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_err_xgboostmut$max_depth, eta = params_err_xgboostmut$eta, gamma = params_err_xgboostmut$gamma, min_child_weight = params_err_xgboostmut$min_child_weight, subsample = params_err_xgboostmut$subsample, colsample_bytree = params_err_xgboostmut$colsample_bytree, nrounds = params_err_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 1)
-  
+
+  # train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_acc_xgboostmut$max_depth, eta = params_acc_xgboostmut$eta, gamma = params_acc_xgboostmut$gamma, min_child_weight = params_acc_xgboostmut$min_child_weight, subsample = params_acc_xgboostmut$subsample, colsample_bytree = params_acc_xgboostmut$colsample_bytree, nrounds = params_acc_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 1)
+
   # XGBoostMut seats=1
-  cat("XGBoostMut seats=1\n")
-  XGBoostMut_s1 <- train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_err_xgboostmut$max_depth, eta = params_err_xgboostmut$eta, gamma = params_err_xgboostmut$gamma, min_child_weight = params_err_xgboostmut$min_child_weight, subsample = params_err_xgboostmut$subsample, colsample_bytree = params_err_xgboostmut$colsample_bytree, nrounds = params_err_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 1)
-  treatment_XGBoost_mut_s1[remove_patients] <- predict_xgb(XGBoostMut_s1, mutations_w12[remove_patients,])
-  
-  # XGBoostMut seats=6
-  cat("XGBoostMut seats=6\n")
-  XGBoostMut_s6 <- train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_err_xgboostmut$max_depth, eta = params_err_xgboostmut$eta, gamma = params_err_xgboostmut$gamma, min_child_weight = params_err_xgboostmut$min_child_weight, subsample = params_err_xgboostmut$subsample, colsample_bytree = params_err_xgboostmut$colsample_bytree, nrounds = params_err_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 6)
-  treatment_XGBoost_mut_s6[remove_patients] <- predict_xgb(XGBoostMut_s6, mutations_w12[remove_patients,])
-  
+  # cat("XGBoostMut seats=1\n")
+  # XGBoostMut_s1 <- train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_acc_xgboostmut$max_depth, eta = params_acc_xgboostmut$eta, gamma = params_acc_xgboostmut$gamma, min_child_weight = params_acc_xgboostmut$min_child_weight, subsample = params_acc_xgboostmut$subsample, colsample_bytree = params_acc_xgboostmut$colsample_bytree, nrounds = params_acc_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 1)
+  # treatment_XGBoost_mut_s1[remove_patients] <- predict_xgb(XGBoostMut_s1, mutations_w12[remove_patients,])
+  # 
+  # # XGBoostMut seats=6
+  # cat("XGBoostMut seats=6\n")
+  # XGBoostMut_s6 <- train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_acc_xgboostmut$max_depth, eta = params_acc_xgboostmut$eta, gamma = params_acc_xgboostmut$gamma, min_child_weight = params_acc_xgboostmut$min_child_weight, subsample = params_acc_xgboostmut$subsample, colsample_bytree = params_acc_xgboostmut$colsample_bytree, nrounds = params_acc_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 6)
+  # treatment_XGBoost_mut_s6[remove_patients] <- predict_xgb(XGBoostMut_s6, mutations_w12[remove_patients,])
+
   # XGBoostMut seats=16
-  cat("XGBoostMut seats=16\n")
-  XGBoostMut_s16 <- train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_err_xgboostmut$max_depth, eta = params_err_xgboostmut$eta, gamma = params_err_xgboostmut$gamma, min_child_weight = params_err_xgboostmut$min_child_weight, subsample = params_err_xgboostmut$subsample, colsample_bytree = params_err_xgboostmut$colsample_bytree, nrounds = params_err_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 16)
-  treatment_XGBoost_mut_s16[remove_patients] <- predict_xgb(XGBoostMut_s16, mutations_w12[remove_patients,])
-  
-  # XGBoostMut seats=19
-  cat("XGBoostMut seats=19\n")
-  XGBoostMut_s19 <- train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_err_xgboostmut$max_depth, eta = params_err_xgboostmut$eta, gamma = params_err_xgboostmut$gamma, min_child_weight = params_err_xgboostmut$min_child_weight, subsample = params_err_xgboostmut$subsample, colsample_bytree = params_err_xgboostmut$colsample_bytree, nrounds = params_err_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 19)
-  treatment_XGBoost_mut_s19[remove_patients] <- predict_xgb(XGBoostMut_s19, mutations_w12[remove_patients,])
-  
+  # cat("XGBoostMut seats=16\n")
+  # XGBoostMut_s16 <- train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_acc_xgboostmut$max_depth, eta = params_acc_xgboostmut$eta, gamma = params_acc_xgboostmut$gamma, min_child_weight = params_acc_xgboostmut$min_child_weight, subsample = params_acc_xgboostmut$subsample, colsample_bytree = params_acc_xgboostmut$colsample_bytree, nrounds = params_acc_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 16)
+  # treatment_XGBoost_mut_s16[remove_patients] <- predict_xgb(XGBoostMut_s16, mutations_w12[remove_patients,])
+
+  # # XGBoostMut seats=19
+  # cat("XGBoostMut seats=19\n")
+  # XGBoostMut_s19 <- train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_acc_xgboostmut$max_depth, eta = params_acc_xgboostmut$eta, gamma = params_acc_xgboostmut$gamma, min_child_weight = params_acc_xgboostmut$min_child_weight, subsample = params_acc_xgboostmut$subsample, colsample_bytree = params_acc_xgboostmut$colsample_bytree, nrounds = params_acc_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 19)
+  # treatment_XGBoost_mut_s19[remove_patients] <- predict_xgb(XGBoostMut_s19, mutations_w12[remove_patients,])
+
   # XGBoostMut seats=22
   cat("XGBoostMut seats=22\n")
-  XGBoostMut_s22 <- train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_err_xgboostmut$max_depth, eta = params_err_xgboostmut$eta, gamma = params_err_xgboostmut$gamma, min_child_weight = params_err_xgboostmut$min_child_weight, subsample = params_err_xgboostmut$subsample, colsample_bytree = params_err_xgboostmut$colsample_bytree, nrounds = params_err_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 22)
+  XGBoostMut_s22 <- train_xgb_seats(mutations_w12[keep_patients,], pseudop_w12[keep_patients,], max_depth = params_acc_xgboostmut$max_depth, eta = params_acc_xgboostmut$eta, gamma = params_acc_xgboostmut$gamma, min_child_weight = params_acc_xgboostmut$min_child_weight, subsample = params_acc_xgboostmut$subsample, colsample_bytree = params_acc_xgboostmut$colsample_bytree, nrounds = params_acc_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = 22)
   treatment_XGBoost_mut_s22[remove_patients] <- predict_xgb(XGBoostMut_s22, mutations_w12[remove_patients,])
-  
-  # ODTExp NEED TO REDO THIS
-  cat("ODTExp\n")
-  ODTExp <- trainTree(PatientData = expression_w12[keep_patients,], PatientSensitivity = drug_response_w12[keep_patients,], minbucket = minbucket_exp)
-  treatment_ODT_exp[remove_patients] <- predictTree(tree = ODTExp, PatientSensitivityTrain = drug_response_w12[keep_patients,], PatientData = expression_w12[remove_patients,])
-  
-  # RFExp
-  # cat("RFExp\n")
-  # RFExp <- train_rf_hard(expression_w12[keep_patients,], drug_response_w12[keep_patients,],num_trees=num_trees)
-  # treatment_RF_exp[remove_patients] <- predict_rf(RFExp,expression_w12[remove_patients,])
-  
-  # RFExp seats=1
-  RFExp_s1 <- train_rf_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-                             num_trees = params_err_rfexp_seats$num_trees, 
-                             mtry = params_err_rfexp_seats$mtry, 
-                             min_node_size = params_err_rfexp_seats$min_node_size, 
-                             max_depth = params_err_rfexp_seats$max_depth, 
-                             sample_fraction = params_err_rfexp_seats$sample_fraction, 
-                             num_seats = 1)
-  treatment_RF_exp_s1[remove_patients] <- predict_rf(RFExp_s1, expression_w12[remove_patients,])
-  
-  # RFExp seats=6
-  RFExp_s6 <- train_rf_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-                             num_trees = params_err_rfexp_seats$num_trees, 
-                             mtry = params_err_rfexp_seats$mtry, 
-                             min_node_size = params_err_rfexp_seats$min_node_size, 
-                             max_depth = params_err_rfexp_seats$max_depth, 
-                             sample_fraction = params_err_rfexp_seats$sample_fraction, 
-                             num_seats = 6)
-  treatment_RF_exp_s6[remove_patients] <- predict_rf(RFExp_s6, expression_w12[remove_patients,])
-  
-  # RFExp seats=16
-  RFExp_s16 <- train_rf_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-                              num_trees = params_err_rfexp_seats$num_trees, 
-                              mtry = params_err_rfexp_seats$mtry, 
-                              min_node_size = params_err_rfexp_seats$min_node_size, 
-                              max_depth = params_err_rfexp_seats$max_depth, 
-                              sample_fraction = params_err_rfexp_seats$sample_fraction, 
-                              num_seats = 16)
-  treatment_RF_exp_s16[remove_patients] <- predict_rf(RFExp_s16, expression_w12[remove_patients,])
-  
-  # RFExp seats=19
-  RFExp_s19 <- train_rf_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-                              num_trees = params_err_rfexp_seats$num_trees, 
-                              mtry = params_err_rfexp_seats$mtry, 
-                              min_node_size = params_err_rfexp_seats$min_node_size, 
-                              max_depth = params_err_rfexp_seats$max_depth, 
-                              sample_fraction = params_err_rfexp_seats$sample_fraction, 
-                              num_seats = 19)
-  treatment_RF_exp_s19[remove_patients] <- predict_rf(RFExp_s19, expression_w12[remove_patients,])
-  
-  # RFExp seats=22
-  RFExp_s22 <- train_rf_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-                              num_trees = params_err_rfexp_seats$num_trees, 
-                              mtry = params_err_rfexp_seats$mtry, 
-                              min_node_size = params_err_rfexp_seats$min_node_size, 
-                              max_depth = params_err_rfexp_seats$max_depth, 
-                              sample_fraction = params_err_rfexp_seats$sample_fraction, 
-                              num_seats = 22)
-  treatment_RF_exp_s22[remove_patients] <- predict_rf(RFExp_s22, expression_w12[remove_patients,])
-  
-  # XGBoostExp
-  # cat("XGBoostExp\n")
-  # XGBoostExp <- train_xgb_hard(expression_w12[keep_patients,], drug_response_w12[keep_patients,],nrounds=nrounds)
-  # treatment_XGBoost_exp[remove_patients] <- predict_xgb(XGBoostExp,expression_w12[remove_patients,])
-  
-  # XGBoostExp seats=1
-  cat("XGBoostExp seats=1\n")
-  XGBoostExp_s1 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-                                   max_depth = params_err_xgboostexp_seats$max_depth, 
-                                   eta = params_err_xgboostexp_seats$eta, 
-                                   gamma = params_err_xgboostexp_seats$gamma, 
-                                   min_child_weight = params_err_xgboostexp_seats$min_child_weight, 
-                                   subsample = params_err_xgboostexp_seats$subsample, 
-                                   colsample_bytree = params_err_xgboostexp_seats$colsample_bytree, 
-                                   nrounds = params_err_xgboostexp_seats$nrounds, 
-                                   early_stopping_rounds = 10, 
-                                   num_seats = 1)
-  treatment_XGBoost_exp_s1[remove_patients] <- predict_xgb(XGBoostExp_s1, expression_w12[remove_patients,])
-  
-  # XGBoostExp seats=6
-  cat("XGBoostExp seats=6\n")
-  XGBoostExp_s6 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-                                   max_depth = params_err_xgboostexp_seats$max_depth, 
-                                   eta = params_err_xgboostexp_seats$eta, 
-                                   gamma = params_err_xgboostexp_seats$gamma, 
-                                   min_child_weight = params_err_xgboostexp_seats$min_child_weight, 
-                                   subsample = params_err_xgboostexp_seats$subsample, 
-                                   colsample_bytree = params_err_xgboostexp_seats$colsample_bytree, 
-                                   nrounds = params_err_xgboostexp_seats$nrounds, 
-                                   early_stopping_rounds = 10, 
-                                   num_seats = 6)
-  treatment_XGBoost_exp_s6[remove_patients] <- predict_xgb(XGBoostExp_s6, expression_w12[remove_patients,])
-  
-  # XGBoostExp seats=16
-  cat("XGBoostExp seats=16\n")
-  XGBoostExp_s16 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-                                    max_depth = params_err_xgboostexp_seats$max_depth, 
-                                    eta = params_err_xgboostexp_seats$eta, 
-                                    gamma = params_err_xgboostexp_seats$gamma, 
-                                    min_child_weight = params_err_xgboostexp_seats$min_child_weight, 
-                                    subsample = params_err_xgboostexp_seats$subsample, 
-                                    colsample_bytree = params_err_xgboostexp_seats$colsample_bytree, 
-                                    nrounds = params_err_xgboostexp_seats$nrounds, 
-                                    early_stopping_rounds = 10, 
-                                    num_seats = 16)
-  treatment_XGBoost_exp_s16[remove_patients] <- predict_xgb(XGBoostExp_s16, expression_w12[remove_patients,])
-  
-  # # XGBoostExp seats=19
-  # cat("XGBoostExp seats=19\n")
-  # XGBoostExp_s19 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-  #                                   max_depth = params_err_xgboostexp_seats$max_depth, 
-  #                                   eta = params_err_xgboostexp_seats$eta, 
-  #                                   gamma = params_err_xgboostexp_seats$gamma, 
-  #                                   min_child_weight = params_err_xgboostexp_seats$min_child_weight, 
-  #                                   subsample = params_err_xgboostexp_seats$subsample, 
-  #                                   colsample_bytree = params_err_xgboostexp_seats$colsample_bytree, 
-  #                                   nrounds = params_err_xgboostexp_seats$nrounds, 
-  #                                   early_stopping_rounds = 10, 
-  #                                   num_seats = 19)
-  # treatment_XGBoost_exp_s19[remove_patients] <- predict_xgb(XGBoostExp_s19, expression_w12[remove_patients,])
+
+  # # ODTExp NEED TO REDO THIS
+  # cat("ODTExp\n")
+  # ODTExp <- trainTree(PatientData = expression_w12[keep_patients,], PatientSensitivity = drug_response_w12[keep_patients,], minbucket = minbucket_exp)
+  # treatment_ODT_exp[remove_patients] <- predictTree(tree = ODTExp, PatientSensitivityTrain = drug_response_w12[keep_patients,], PatientData = expression_w12[remove_patients,])
   # 
-  # # XGBoostExp seats=22
-  # cat("XGBoostExp seats=22\n")
-  # XGBoostExp_s22 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-  #                                   max_depth = params_err_xgboostexp_seats$max_depth, 
-  #                                   eta = params_err_xgboostexp_seats$eta, 
-  #                                   gamma = params_err_xgboostexp_seats$gamma, 
-  #                                   min_child_weight = params_err_xgboostexp_seats$min_child_weight, 
-  #                                   subsample = params_err_xgboostexp_seats$subsample, 
-  #                                   colsample_bytree = params_err_xgboostexp_seats$colsample_bytree, 
-  #                                   nrounds = params_err_xgboostexp_seats$nrounds, 
-  #                                   early_stopping_rounds = 10, 
-  #                                   num_seats = 22)
-  # treatment_XGBoost_exp_s22[remove_patients] <- predict_xgb(XGBoostExp_s22, expression_w12[remove_patients,])
+  # # RFExp
+  # # cat("RFExp\n")
+  # # RFExp <- train_rf_hard(expression_w12[keep_patients,], drug_response_w12[keep_patients,],num_trees=num_trees)
+  # # treatment_RF_exp[remove_patients] <- predict_rf(RFExp,expression_w12[remove_patients,])
+  # 
+  # # RFExp seats=1
+  # RFExp_s1 <- train_rf_seats(expression_w12[keep_patients,], pseudop_w12_g10[keep_patients,], 
+  #                            num_trees = params_acc_rfexp_seats$num_trees, 
+  #                            mtry = params_acc_rfexp_seats$mtry, 
+  #                            min_node_size = params_acc_rfexp_seats$min_node_size, 
+  #                            max_depth = params_acc_rfexp_seats$max_depth, 
+  #                            sample_fraction = params_acc_rfexp_seats$sample_fraction, 
+  #                            num_seats = 1)
+  # treatment_RF_exp_s1[remove_patients] <- predict_rf(RFExp_s1, expression_w12[remove_patients,])
+  # 
+  # # RFExp seats=6
+  # RFExp_s6 <- train_rf_seats(expression_w12[keep_patients,], pseudop_w12_g10[keep_patients,], 
+  #                            num_trees = params_acc_rfexp_seats$num_trees, 
+  #                            mtry = params_acc_rfexp_seats$mtry, 
+  #                            min_node_size = params_acc_rfexp_seats$min_node_size, 
+  #                            max_depth = params_acc_rfexp_seats$max_depth, 
+  #                            sample_fraction = params_acc_rfexp_seats$sample_fraction, 
+  #                            num_seats = 6)
+  # treatment_RF_exp_s6[remove_patients] <- predict_rf(RFExp_s6, expression_w12[remove_patients,])
+  # 
+  # # RFExp seats=16
+  # RFExp_s16 <- train_rf_seats(expression_w12[keep_patients,], pseudop_w12_g10[keep_patients,], 
+  #                             num_trees = params_acc_rfexp_seats$num_trees, 
+  #                             mtry = params_acc_rfexp_seats$mtry, 
+  #                             min_node_size = params_acc_rfexp_seats$min_node_size, 
+  #                             max_depth = params_acc_rfexp_seats$max_depth, 
+  #                             sample_fraction = params_acc_rfexp_seats$sample_fraction, 
+  #                             num_seats = 16)
+  # treatment_RF_exp_s16[remove_patients] <- predict_rf(RFExp_s16, expression_w12[remove_patients,])
+  # 
+  # # RFExp seats=19
+  # RFExp_s19 <- train_rf_seats(expression_w12[keep_patients,], pseudop_w12_g10[keep_patients,], 
+  #                             num_trees = params_acc_rfexp_seats$num_trees, 
+  #                             mtry = params_acc_rfexp_seats$mtry, 
+  #                             min_node_size = params_acc_rfexp_seats$min_node_size, 
+  #                             max_depth = params_acc_rfexp_seats$max_depth, 
+  #                             sample_fraction = params_acc_rfexp_seats$sample_fraction, 
+  #                             num_seats = 19)
+  # treatment_RF_exp_s19[remove_patients] <- predict_rf(RFExp_s19, expression_w12[remove_patients,])
+  # 
+  # # RFExp seats=22
+  # RFExp_s22 <- train_rf_seats(expression_w12[keep_patients,], pseudop_w12_g10[keep_patients,], 
+  #                             num_trees = params_acc_rfexp_seats$num_trees, 
+  #                             mtry = params_acc_rfexp_seats$mtry, 
+  #                             min_node_size = params_acc_rfexp_seats$min_node_size, 
+  #                             max_depth = params_acc_rfexp_seats$max_depth, 
+  #                             sample_fraction = params_acc_rfexp_seats$sample_fraction, 
+  #                             num_seats = 22)
+  # treatment_RF_exp_s22[remove_patients] <- predict_rf(RFExp_s22, expression_w12[remove_patients,])
+  # 
+  # # XGBoostExp
+  # # cat("XGBoostExp\n")
+  # # XGBoostExp <- train_xgb_hard(expression_w12[keep_patients,], drug_response_w12[keep_patients,],nrounds=nrounds)
+  # # treatment_XGBoost_exp[remove_patients] <- predict_xgb(XGBoostExp,expression_w12[remove_patients,])
+  # 
+  # # XGBoostExp seats=1
+  # cat("XGBoostExp seats=1\n")
+  # XGBoostExp_s1 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12_g10[keep_patients,], 
+  #                                  max_depth = params_acc_xgboostexp_seats$max_depth, 
+  #                                  eta = params_acc_xgboostexp_seats$eta, 
+  #                                  gamma = params_acc_xgboostexp_seats$gamma, 
+  #                                  min_child_weight = params_acc_xgboostexp_seats$min_child_weight, 
+  #                                  subsample = params_acc_xgboostexp_seats$subsample, 
+  #                                  colsample_bytree = params_acc_xgboostexp_seats$colsample_bytree, 
+  #                                  nrounds = params_acc_xgboostexp_seats$nrounds, 
+  #                                  early_stopping_rounds = 10, 
+  #                                  num_seats = 1)
+  # treatment_XGBoost_exp_s1[remove_patients] <- predict_xgb(XGBoostExp_s1, expression_w12[remove_patients,])
+  # 
+  # # # XGBoostExp seats=6
+  # # cat("XGBoostExp seats=6\n")
+  # # XGBoostExp_s6 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12_g10[keep_patients,], 
+  # #                                  max_depth = params_acc_xgboostexp_seats$max_depth, 
+  # #                                  eta = params_acc_xgboostexp_seats$eta, 
+  # #                                  gamma = params_acc_xgboostexp_seats$gamma, 
+  # #                                  min_child_weight = params_acc_xgboostexp_seats$min_child_weight, 
+  # #                                  subsample = params_acc_xgboostexp_seats$subsample, 
+  # #                                  colsample_bytree = params_acc_xgboostexp_seats$colsample_bytree, 
+  # #                                  nrounds = params_acc_xgboostexp_seats$nrounds, 
+  # #                                  early_stopping_rounds = 10, 
+  # #                                  num_seats = 6)
+  # # treatment_XGBoost_exp_s6[remove_patients] <- predict_xgb(XGBoostExp_s6, expression_w12[remove_patients,])
+  # # 
+  # # # XGBoostExp seats=16
+  # # cat("XGBoostExp seats=16\n")
+  # # XGBoostExp_s16 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12_g10[keep_patients,], 
+  # #                                   max_depth = params_acc_xgboostexp_seats$max_depth, 
+  # #                                   eta = params_acc_xgboostexp_seats$eta, 
+  # #                                   gamma = params_acc_xgboostexp_seats$gamma, 
+  # #                                   min_child_weight = params_acc_xgboostexp_seats$min_child_weight, 
+  # #                                   subsample = params_acc_xgboostexp_seats$subsample, 
+  # #                                   colsample_bytree = params_acc_xgboostexp_seats$colsample_bytree, 
+  # #                                   nrounds = params_acc_xgboostexp_seats$nrounds, 
+  # #                                   early_stopping_rounds = 10, 
+  # #                                   num_seats = 16)
+  # # treatment_XGBoost_exp_s16[remove_patients] <- predict_xgb(XGBoostExp_s16, expression_w12[remove_patients,])
+  # # 
+  # # # XGBoostExp seats=19
+  # # cat("XGBoostExp seats=19\n")
+  # # XGBoostExp_s19 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
+  # #                                   max_depth = params_acc_xgboostexp_seats$max_depth, 
+  # #                                   eta = params_acc_xgboostexp_seats$eta, 
+  # #                                   gamma = params_acc_xgboostexp_seats$gamma, 
+  # #                                   min_child_weight = params_acc_xgboostexp_seats$min_child_weight, 
+  # #                                   subsample = params_acc_xgboostexp_seats$subsample, 
+  # #                                   colsample_bytree = params_acc_xgboostexp_seats$colsample_bytree, 
+  # #                                   nrounds = params_acc_xgboostexp_seats$nrounds, 
+  # #                                   early_stopping_rounds = 10, 
+  # #                                   num_seats = 19)
+  # # treatment_XGBoost_exp_s19[remove_patients] <- predict_xgb(XGBoostExp_s19, expression_w12[remove_patients,])
+  # # 
+  # # # XGBoostExp seats=22
+  # # cat("XGBoostExp seats=22\n")
+  # # XGBoostExp_s22 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
+  # #                                   max_depth = params_acc_xgboostexp_seats$max_depth, 
+  # #                                   eta = params_acc_xgboostexp_seats$eta, 
+  # #                                   gamma = params_acc_xgboostexp_seats$gamma, 
+  # #                                   min_child_weight = params_acc_xgboostexp_seats$min_child_weight, 
+  # #                                   subsample = params_acc_xgboostexp_seats$subsample, 
+  # #                                   colsample_bytree = params_acc_xgboostexp_seats$colsample_bytree, 
+  # #                                   nrounds = params_acc_xgboostexp_seats$nrounds, 
+  # #                                   early_stopping_rounds = 10, 
+  # #                                   num_seats = 22)
+  # # treatment_XGBoost_exp_s22[remove_patients] <- predict_xgb(XGBoostExp_s22, expression_w12[remove_patients,])
 }
 
 # Change to drug names 
@@ -673,7 +673,7 @@ timing_results <- rbind(timing_results, data.frame(Method = "ODTMut", Time = tim
 for (num_seats in c(1, 6, 16, 19, 22)) {
   cat(paste("RFMut seats=", num_seats, "\n", sep = ""))
   start_time <- Sys.time()
-  RFMut_All <- train_rf_seats(mutations_w12,  pseudop_w12, num_trees = params_err_rfmut_seats$num_trees, mtry = params_err_rfmut_seats$mtry, min_node_size = params_err_rfmut_seats$min_node_size, max_depth = params_err_rfmut_seats$max_depth, sample_fraction = params_err_rfmut_seats$sample_fraction, num_seats = num_seats)
+  RFMut_All <- train_rf_seats(mutations_w12,  pseudop_w12, num_trees = params_acc_rfmut_seats$num_trees, mtry = params_acc_rfmut_seats$mtry, min_node_size = params_acc_rfmut_seats$min_node_size, max_depth = params_acc_rfmut_seats$max_depth, sample_fraction = params_acc_rfmut_seats$sample_fraction, num_seats = num_seats)
   assign(paste0("RFMut_All_s", num_seats), RFMut_All)  # Assign model to a unique variable name
   assign(paste0("treatmentRFMut_w34_s", num_seats), predict_rf(RFMut_All, mutations_w34))
   end_time <- Sys.time()
@@ -686,7 +686,7 @@ for (num_seats in c(1, 6, 16, 19, 22)) {
 for (num_seats in c(1, 6, 16, 19, 22)) {
   cat(paste("XGBoostMut vote=", num_seats, "\n", sep = ""))
   start_time <- Sys.time()
-  XGBoostMut_All <- train_xgb_seats(mutations_w12, pseudop_w12, max_depth = params_err_xgboostmut$max_depth, eta = params_err_xgboostmut$eta, gamma = params_err_xgboostmut$gamma, min_child_weight = params_err_xgboostmut$min_child_weight, subsample = params_err_xgboostmut$subsample, colsample_bytree = params_err_xgboostmut$colsample_bytree, nrounds = params_err_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = num_seats)
+  XGBoostMut_All <- train_xgb_seats(mutations_w12, pseudop_w12, max_depth = params_acc_xgboostmut$max_depth, eta = params_acc_xgboostmut$eta, gamma = params_acc_xgboostmut$gamma, min_child_weight = params_acc_xgboostmut$min_child_weight, subsample = params_acc_xgboostmut$subsample, colsample_bytree = params_acc_xgboostmut$colsample_bytree, nrounds = params_acc_xgboostmut$nrounds, early_stopping_rounds = 10, num_seats = num_seats)
   assign(paste0("XGBoostMut_All_s", num_seats), XGBoostMut_All)  # Assign model to a unique variable name
   assign(paste0("treatmentXGBoostMut_w34_s", num_seats), predict_xgb(XGBoostMut_All, mutations_w34))
   end_time <- Sys.time()
@@ -719,12 +719,12 @@ timing_results <- rbind(timing_results, data.frame(Method = "ODTExp", Time = tim
 for (num_seats in c(1, 6, 16, 19, 22)) {
   cat(paste("RFExp seats=", num_seats, "\n", sep = ""))
   start_time <- Sys.time()
-  RFExp_All <- train_rf_seats(expression_w12, pseudop_w12, 
-                              num_trees = params_err_rfexp_seats$num_trees, 
-                              mtry = params_err_rfexp_seats$mtry, 
-                              min_node_size = params_err_rfexp_seats$min_node_size, 
-                              max_depth = params_err_rfexp_seats$max_depth, 
-                              sample_fraction = params_err_rfexp_seats$sample_fraction, 
+  RFExp_All <- train_rf_seats(expression_w12, pseudop_w12_g10, 
+                              num_trees = params_acc_rfexp_seats$num_trees, 
+                              mtry = params_acc_rfexp_seats$mtry, 
+                              min_node_size = params_acc_rfexp_seats$min_node_size, 
+                              max_depth = params_acc_rfexp_seats$max_depth, 
+                              sample_fraction = params_acc_rfexp_seats$sample_fraction, 
                               num_seats = num_seats)
   assign(paste0("RFExp_All_s", num_seats), RFExp_All)  # Assign model to a unique variable name
   assign(paste0("treatmentRFExp_w34_s", num_seats), predict_rf(RFExp_All, expression_w34))
@@ -749,14 +749,14 @@ for (num_seats in c(1, 6, 16, 19, 22)) {
 for (num_seats in c(1, 6, 16, 19, 22)) {
   cat(paste("XGBoostExp seats=", num_seats, "\n", sep = ""))
   start_time <- Sys.time()
-  XGBoostExp_All <- train_xgb_seats(expression_w12, pseudop_w12, 
-                  max_depth = params_err_xgboostexp_seats$max_depth, 
-                  eta = params_err_xgboostexp_seats$eta, 
-                  gamma = params_err_xgboostexp_seats$gamma, 
-                  min_child_weight = params_err_xgboostexp_seats$min_child_weight, 
-                  subsample = params_err_xgboostexp_seats$subsample, 
-                  colsample_bytree = params_err_xgboostexp_seats$colsample_bytree, 
-                  nrounds = params_err_xgboostexp_seats$nrounds, 
+  XGBoostExp_All <- train_xgb_seats(expression_w12, pseudop_w12_g10, 
+                  max_depth = params_acc_xgboostexp_seats$max_depth, 
+                  eta = params_acc_xgboostexp_seats$eta, 
+                  gamma = params_acc_xgboostexp_seats$gamma, 
+                  min_child_weight = params_acc_xgboostexp_seats$min_child_weight, 
+                  subsample = params_acc_xgboostexp_seats$subsample, 
+                  colsample_bytree = params_acc_xgboostexp_seats$colsample_bytree, 
+                  nrounds = params_acc_xgboostexp_seats$nrounds, 
                   early_stopping_rounds = 10, 
                   num_seats = num_seats)
   assign(paste0("XGBoostExp_All_s", num_seats), XGBoostExp_All)  # Assign model to a unique variable name
@@ -906,11 +906,11 @@ niceTree(ODTExp_All)
 
 # RF - RFExp_s22
 RFExp_All <- train_rf_seats(expression_w12, pseudop_w12, 
-                            num_trees = params_err_rfexp_seats$num_trees, 
-                            mtry = params_err_rfexp_seats$mtry, 
-                            min_node_size = params_err_rfexp_seats$min_node_size, 
-                            max_depth = params_err_rfexp_seats$max_depth, 
-                            sample_fraction = params_err_rfexp_seats$sample_fraction, 
+                            num_trees = params_acc_rfexp_seats$num_trees, 
+                            mtry = params_acc_rfexp_seats$mtry, 
+                            min_node_size = params_acc_rfexp_seats$min_node_size, 
+                            max_depth = params_acc_rfexp_seats$max_depth, 
+                            sample_fraction = params_acc_rfexp_seats$sample_fraction, 
                             num_seats = 6)
 
 plot(RFExp_All)
@@ -919,13 +919,13 @@ varImpPlot(RFExp_All)
 # XGBoost - XGBoostExp_s6
 # Extract variable importance
 XGBoostExp_All <- train_xgb_seats(expression_w12, pseudop_w12, 
-                                  max_depth = params_err_xgboostexp_seats$max_depth, 
-                                  eta = params_err_xgboostexp_seats$eta, 
-                                  gamma = params_err_xgboostexp_seats$gamma, 
-                                  min_child_weight = params_err_xgboostexp_seats$min_child_weight, 
-                                  subsample = params_err_xgboostexp_seats$subsample, 
-                                  colsample_bytree = params_err_xgboostexp_seats$colsample_bytree, 
-                                  nrounds = params_err_xgboostexp_seats$nrounds, 
+                                  max_depth = params_acc_xgboostexp_seats$max_depth, 
+                                  eta = params_acc_xgboostexp_seats$eta, 
+                                  gamma = params_acc_xgboostexp_seats$gamma, 
+                                  min_child_weight = params_acc_xgboostexp_seats$min_child_weight, 
+                                  subsample = params_acc_xgboostexp_seats$subsample, 
+                                  colsample_bytree = params_acc_xgboostexp_seats$colsample_bytree, 
+                                  nrounds = params_acc_xgboostexp_seats$nrounds, 
                                   early_stopping_rounds = 10, 
                                   num_seats = 6)
 
@@ -1139,10 +1139,6 @@ for (method in names(treatment_vectors)) {
 print(rank_counts)
 
 # Heatmap of rank counts
-# Load necessary library
-# Load necessary libraries
-library(pheatmap)
-library(grid)
-library(gridExtra)
-
-# Assuming rank_counts_matrix is already
+rank_counts_matrix <- as.matrix(rank_counts)
+View(rank_counts_matrix)
+pheatmap(rank_counts_matrix[-1,1:20], cluster_cols = F, cluster_rows = F)
