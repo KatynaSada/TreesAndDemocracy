@@ -54,8 +54,8 @@ R (≥ 4.0 recommended) and the following packages used by the scripts:
 - XGBoost and Random Forest backends are invoked through helper functions defined in code/XAIfunctions.R
 
 Install packages in R:
-install.packages(c("readxl","writexl","matrixStats","partykit","impute","ggplot2","ggpattern","pheatmap","dplyr","gtools","tidyr"))
 ```r
+install.packages(c("readxl","writexl","matrixStats","partykit","impute","ggplot2","ggpattern","pheatmap","dplyr","gtools","tidyr"))
 # ODT and xgboost may require:
 install.packages("ODT")
 install.packages("xgboost")
