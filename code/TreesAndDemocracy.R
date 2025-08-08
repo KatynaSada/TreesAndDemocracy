@@ -353,8 +353,6 @@ for (group in 1:folds) { #folds
   treatment_RF_mut_s22[remove_patients] <- predict_rf(RFMut_s22, mutations_w12[remove_patients,])
   
   
-  
-  
   # XGBoostMut
   # cat("XGBoostMut\n")
   # XGBoostMut <- train_xgb_hard(mutations_w12[keep_patients,], drug_response_w12[keep_patients,],nrounds=nrounds)
@@ -494,33 +492,33 @@ for (group in 1:folds) { #folds
                                     num_seats = 16)
   treatment_XGBoost_exp_s16[remove_patients] <- predict_xgb(XGBoostExp_s16, expression_w12[remove_patients,])
   
-  # # XGBoostExp seats=19
-  # cat("XGBoostExp seats=19\n")
-  # XGBoostExp_s19 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-  #                                   max_depth = params_err_xgboostexp_seats$max_depth, 
-  #                                   eta = params_err_xgboostexp_seats$eta, 
-  #                                   gamma = params_err_xgboostexp_seats$gamma, 
-  #                                   min_child_weight = params_err_xgboostexp_seats$min_child_weight, 
-  #                                   subsample = params_err_xgboostexp_seats$subsample, 
-  #                                   colsample_bytree = params_err_xgboostexp_seats$colsample_bytree, 
-  #                                   nrounds = params_err_xgboostexp_seats$nrounds, 
-  #                                   early_stopping_rounds = 10, 
-  #                                   num_seats = 19)
-  # treatment_XGBoost_exp_s19[remove_patients] <- predict_xgb(XGBoostExp_s19, expression_w12[remove_patients,])
-  # 
-  # # XGBoostExp seats=22
-  # cat("XGBoostExp seats=22\n")
-  # XGBoostExp_s22 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,], 
-  #                                   max_depth = params_err_xgboostexp_seats$max_depth, 
-  #                                   eta = params_err_xgboostexp_seats$eta, 
-  #                                   gamma = params_err_xgboostexp_seats$gamma, 
-  #                                   min_child_weight = params_err_xgboostexp_seats$min_child_weight, 
-  #                                   subsample = params_err_xgboostexp_seats$subsample, 
-  #                                   colsample_bytree = params_err_xgboostexp_seats$colsample_bytree, 
-  #                                   nrounds = params_err_xgboostexp_seats$nrounds, 
-  #                                   early_stopping_rounds = 10, 
-  #                                   num_seats = 22)
-  # treatment_XGBoost_exp_s22[remove_patients] <- predict_xgb(XGBoostExp_s22, expression_w12[remove_patients,])
+  # XGBoostExp seats=19
+  cat("XGBoostExp seats=19\n")
+  XGBoostExp_s19 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,],
+                                    max_depth = params_err_xgboostexp_seats$max_depth,
+                                    eta = params_err_xgboostexp_seats$eta,
+                                    gamma = params_err_xgboostexp_seats$gamma,
+                                    min_child_weight = params_err_xgboostexp_seats$min_child_weight,
+                                    subsample = params_err_xgboostexp_seats$subsample,
+                                    colsample_bytree = params_err_xgboostexp_seats$colsample_bytree,
+                                    nrounds = params_err_xgboostexp_seats$nrounds,
+                                    early_stopping_rounds = 10,
+                                    num_seats = 19)
+  treatment_XGBoost_exp_s19[remove_patients] <- predict_xgb(XGBoostExp_s19, expression_w12[remove_patients,])
+
+  # XGBoostExp seats=22
+  cat("XGBoostExp seats=22\n")
+  XGBoostExp_s22 <- train_xgb_seats(expression_w12[keep_patients,], pseudop_w12[keep_patients,],
+                                    max_depth = params_err_xgboostexp_seats$max_depth,
+                                    eta = params_err_xgboostexp_seats$eta,
+                                    gamma = params_err_xgboostexp_seats$gamma,
+                                    min_child_weight = params_err_xgboostexp_seats$min_child_weight,
+                                    subsample = params_err_xgboostexp_seats$subsample,
+                                    colsample_bytree = params_err_xgboostexp_seats$colsample_bytree,
+                                    nrounds = params_err_xgboostexp_seats$nrounds,
+                                    early_stopping_rounds = 10,
+                                    num_seats = 22)
+  treatment_XGBoost_exp_s22[remove_patients] <- predict_xgb(XGBoostExp_s22, expression_w12[remove_patients,])
 }
 
 # Change to drug names 
@@ -618,14 +616,14 @@ ggsave(paste(folder_dir, "/images/boxplot_validate_final.png", sep = ""), treatm
 
 
 # Calculate mean and median IC50 for each method
-summary_stats <- treatment_plot %>%
+summary_stats_val <- treatment_plot %>%
   group_by(Method) %>%
   summarise(
     Mean_IC50 = mean(IC50, na.rm = TRUE),
     Median_IC50 = median(IC50, na.rm = TRUE)
   ) %>%
   arrange(Mean_IC50)
-write_xlsx(summary_stats, paste(folder_dir, "/ic50_results_validation_final.xlsx", sep = ""))
+write_xlsx(summary_stats_val, paste(folder_dir, "/ic50_results_validation_final.xlsx", sep = ""))
 
 #===============================================================================
 # 6. Model Training on Complete Dataset
@@ -859,14 +857,14 @@ ggsave("/Users/katyna/Desktop/w34.png", treatment_plot_test_gg, width = 12, heig
 
 
 # Calculate mean and median IC50 for each method
-summary_stats <- treatment_plot_test %>%
+summary_stats_test <- treatment_plot_test %>%
   group_by(Method) %>%
   summarise(
     Mean_IC50 = mean(IC50, na.rm = TRUE),
     Median_IC50 = median(IC50, na.rm = TRUE)
   ) %>%
   arrange(Mean_IC50)
-write_xlsx(summary_stats, paste(folder_dir, "/ic50_results_test_final.xlsx", sep = ""))
+write_xlsx(summary_stats_test, paste(folder_dir, "/ic50_results_test_final.xlsx", sep = ""))
 
 # Save results for GDSC
 save(ODTMut_All, RFMut_All_s1, RFMut_All_s6, RFMut_All_s16, RFMut_All_s19, RFMut_All_s22,
@@ -893,6 +891,49 @@ save(ODTMut_All, RFMut_All_s1, RFMut_All_s6, RFMut_All_s16, RFMut_All_s19, RFMut
 # load(file = paste(folder_dir,"Rdata/mut_results_test.RData",sep=""))  
 
 #
+
+# Compute statistical differences ---------------------------
+# Load required libraries
+library(gtools)
+
+# Assuming validation_plot is your data frame
+# Calculate means by method
+means <- treatment_plot_test %>%
+  group_by(Method) %>%
+  summarise(Mean_IC50 = mean(IC50, na.rm = TRUE)) %>%
+  ungroup()
+
+# Function to perform Wilcoxon test and return p-value
+wilcoxon_test_pair <- function(x, y) {
+  test <- try(wilcox.test(x, y, exact = FALSE), silent = TRUE)
+  if (inherits(test, "try-error")) {
+    return(NA)  # Return NA if the test fails
+  } else {
+    return(test$p.value)
+  }
+}
+
+# List of all unique methods
+methods <- unique(treatment_plot_test$Method)
+
+# Generate all possible pairs of methods
+method_pairs <- combn(methods, 2, simplify = FALSE)
+
+# Apply the Wilcoxon test to each pair and store results in a data frame
+pairwise_tests <- data.frame(Method1 = character(), Method2 = character(), p_value = numeric())
+for (i in seq_along(method_pairs)) {
+  pair <- method_pairs[[i]]
+  pairwise_tests <- rbind(pairwise_tests, data.frame(
+    Method1 = pair[1],
+    Method2 = pair[2],
+    p_value = wilcoxon_test_pair(treatment_plot_test$IC50[treatment_plot_test$Method == pair[1]],
+                                 treatment_plot_test$IC50[treatment_plot_test$Method == pair[2]])
+  ))
+}
+
+# Print the results data frame
+View(pairwise_tests)
+
 
 #===============================================================================
 # 7. Model Explainability Plots and Perfomance Metrics
@@ -1145,4 +1186,41 @@ library(pheatmap)
 library(grid)
 library(gridExtra)
 
-# Assuming rank_counts_matrix is already
+# Assuming rank_counts_matrix is already defined and is a matrix
+# Exclude the first row and select the first 20 columns for plotting
+data_to_plot <- rank_counts_matrix[-1, 1:20]
+
+# Create the heatmap with titles and axis labels
+p <- pheatmap(
+  mat = data_to_plot,
+  cluster_cols = FALSE,       # Disable column clustering
+  cluster_rows = FALSE,       # Disable row clustering
+  main = "Drug Ranking Heatmap (Waves 3+4)", # Title of the heatmap
+  fontsize = 24,              # Font size for text
+  fontsize_row = 24,           # Font size for row labels
+  fontsize_col = 24,           # Font size for column labels
+  silent = TRUE               # Suppress drawing
+)
+
+# Extract the gtable from the pheatmap object
+heatmap_gtable <- p$gtable
+
+# Create custom x and y axis labels
+x_label_grob <- textGrob("Drug Ranking", gp=gpar(fontsize=24), hjust=1 ,vjust=0)
+y_label_grob <- textGrob("Model", gp=gpar(fontsize=24), rot=90, vjust=1)
+
+# Combine the heatmap with labels using grid.arrange
+grid.newpage()
+combined_gtable <- arrangeGrob(
+  arrangeGrob(y_label_grob, heatmap_gtable, ncol=2, widths=c(1, 8)),
+  x_label_grob,
+  nrow=2,
+  heights=c(8,1)
+)
+grid.draw(combined_gtable)
+
+# Save the heatmap with a transparent background
+ggsave(paste(folder_dir, "/images/drug_ranking_heatmap.png", sep = ""), plot = combined_gtable, 
+       bg = "transparent", width = 10, height = 8, dpi = 300)
+
+
