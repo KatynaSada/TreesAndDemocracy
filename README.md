@@ -55,9 +55,11 @@ R (≥ 4.0 recommended) and the following packages used by the scripts:
 
 Install packages in R:
 install.packages(c("readxl","writexl","matrixStats","partykit","impute","ggplot2","ggpattern","pheatmap","dplyr","gtools","tidyr"))
+```r
 # ODT and xgboost may require:
-# install.packages("ODT")
-# install.packages("xgboost")
+install.packages("ODT")
+install.packages("xgboost")
+```
 
 ## Usage
 1) Verify working directory and paths
@@ -89,6 +91,3 @@ install.packages(c("readxl","writexl","matrixStats","partykit","impute","ggplot2
 - Some “hard” RF/XGBoost baselines are present but commented out in the scripts; the active comparisons primarily use SEATS variants.
 - The helper functions (train_rf_seats, train_xgb_seats, predict_rf, predict_xgb, niceTree, etc.) are sourced from code/XAIfunctions.R and must be available.
 - The repository assumes access to BeatAML2 data files; these are not included here.
-
-## Citation
-If you use this code, please cite the associated paper (insert full citation once available).
